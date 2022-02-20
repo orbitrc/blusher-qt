@@ -16,7 +16,9 @@ TARGET = blusher
 SOURCES += \
     src/application-impl.cpp \
     src/application.cpp \
+    src/signal-impl.cpp \
     src/surface.cpp \
+    src/signal.cpp \
     src/color.cpp \
     blusherqt.cpp \
     src/surface-impl.cpp
@@ -24,10 +26,12 @@ SOURCES += \
 HEADERS += \
     include/blusher/application.h \
     include/blusher/surface.h \
+    include/blusher/signal.h \
     include/blusher/color.h \
     blusher-qt_global.h \
     blusherqt.h \
     src/application-impl.h \
+    src/signal-impl.h \
     src/surface-impl.h
 
 # Default rules for deployment.

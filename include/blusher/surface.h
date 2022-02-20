@@ -2,6 +2,7 @@
 #define _BL_SURFACE_H
 
 #include "color.h"
+#include "signal.h"
 
 namespace bl {
 
@@ -17,6 +18,9 @@ public:
     void set_color(const Color& color);
 
     void show();
+
+public:
+    Signal<> color_changed;
 
 private:
     SurfaceImpl *_impl;

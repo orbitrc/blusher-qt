@@ -2,6 +2,12 @@
 
 #include "surface-impl.h"
 
+#include <stdio.h>
+
+#ifdef emit
+#undef emit
+#endif
+
 namespace bl {
 
 Surface::Surface(Surface *parent)
@@ -15,6 +21,8 @@ Surface::Surface(Surface *parent)
     this->_parent = parent;
 
     this->set_color(Color::from_rgb(255, 255, 255));
+
+    this->color_changed.connect([]() { fprintf(stderr, "Hello, color_changed!\n"); });
 }
 
 //=================
@@ -30,6 +38,7 @@ void Surface::set_color(const Color &color)
 {
     this->_color = color;
     this->_impl->setColor(color);
+    /* DEBUG */ this->color_changed.emit();
 }
 
 void Surface::show()
