@@ -24,6 +24,9 @@ public:
 public:
     Signal<> color_changed;
 
+protected:
+    virtual void pointer_press_event();
+
 private:
     SurfaceImpl *_impl;
 

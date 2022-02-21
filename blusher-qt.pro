@@ -21,6 +21,7 @@ SOURCES += \
     src/window.cpp \
     src/signal.cpp \
     src/color.cpp \
+    src/pointer-event.cpp \
     blusherqt.cpp \
     src/application-impl.cpp \
     src/signal-impl.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     include/blusher/window.h \
     include/blusher/signal.h \
     include/blusher/color.h \
+    include/blusher/pointer-event.h \
     blusher-qt_global.h \
     blusherqt.h \
     src/application-impl.h \
