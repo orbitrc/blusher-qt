@@ -16,18 +16,20 @@ VERSION = 0.2.0
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/application-impl.cpp \
     src/application.cpp \
-    src/signal-impl.cpp \
     src/surface.cpp \
+    src/window.cpp \
     src/signal.cpp \
     src/color.cpp \
     blusherqt.cpp \
+    src/application-impl.cpp \
+    src/signal-impl.cpp \
     src/surface-impl.cpp
 
 HEADERS += \
     include/blusher/application.h \
     include/blusher/surface.h \
+    include/blusher/window.h \
     include/blusher/signal.h \
     include/blusher/color.h \
     blusher-qt_global.h \
