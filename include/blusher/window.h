@@ -18,12 +18,19 @@ public:
     void show();
 
 private:
+    void update_decoration();
+    void update_resize();
+    void update_border();
+    void update_title_bar();
+
+private:
     uint32_t _width;
     uint32_t _height;
 
     Surface *_decoration;
     Surface *_resize;
     Surface *_border;
+    Surface *_title_bar;
     Surface *_body;
 };
 
