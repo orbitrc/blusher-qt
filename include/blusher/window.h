@@ -9,11 +9,17 @@ namespace bl {
 
 class Window : public Surface
 {
+public:
     Window();
 
+    uint32_t width() const;
+    uint32_t height() const;
+
+    void show();
+
 private:
-    uint32_t width;
-    uint32_t height;
+    uint32_t _width;
+    uint32_t _height;
 
     Surface *_decoration;
     Surface *_resize;

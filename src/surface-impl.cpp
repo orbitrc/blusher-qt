@@ -1,5 +1,7 @@
 #include "surface-impl.h"
 
+#include <stdio.h>
+
 #include <QBackingStore>
 #include <QPainter>
 #include <QResizeEvent>
@@ -10,6 +12,12 @@ SurfaceImpl::SurfaceImpl(QWindow *parent)
     : QWindow(parent)
 {
     this->m_backingStore = new QBackingStore(this);
+
+    this->setFlag(Qt::FramelessWindowHint, true);
+
+    QSurfaceFormat format;
+    format.setAlphaBufferSize(8);
+    this->setFormat(format);
 
     this->m_x = 0;
     this->m_y = 0;
@@ -91,6 +99,7 @@ void SurfaceImpl::paint()
     if (!isExposed()) {
         return;
     }
+    fprintf(stderr, "SurfaceImpl::paint() - width: %f, height: %f\n", this->width(), this->height());
 
     QRect rect(0, 0, this->width(), this->height());
     this->m_backingStore->beginPaint(rect);
@@ -117,22 +126,30 @@ void SurfaceImpl::setColor(const Color &color)
 
 void SurfaceImpl::onImplXChanged(double x)
 {
-    emit this->xChanged(static_cast<int>(x));
+    if (this->parent() != nullptr) {
+        QWindow::setX(x);
+    }
+//    emit this->xChanged(static_cast<int>(x));
 }
 
 void SurfaceImpl::onImplYChanged(double y)
 {
-    emit this->yChanged(static_cast<int>(y));
+    if (this->parent() != nullptr) {
+        QWindow::setY(y);
+    }
+//    emit this->yChanged(static_cast<int>(y));
 }
 
 void SurfaceImpl::onImplWidthChanged(double width)
 {
-    emit this->widthChanged(static_cast<int>(width));
+    QWindow::setWidth(width);
+//    emit this->widthChanged(static_cast<int>(width));
 }
 
 void SurfaceImpl::onImplHeightChanged(double height)
 {
-    emit this->heightChanged(static_cast<int>(height));
+    QWindow::setHeight(height);
+//    emit this->heightChanged(static_cast<int>(height));
 }
 
 //===========
