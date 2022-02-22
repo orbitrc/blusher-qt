@@ -28,6 +28,7 @@ SurfaceImpl::SurfaceImpl(QWindow *parent)
     this->m_color = QColor(255, 255, 255);
 
     this->m_pointerEnterHandler = nullptr;
+    this->m_pointerLeaveHandler = nullptr;
     this->m_pointerPressHandler = nullptr;
 
     this->setGeometry(this->m_x, this->m_y, this->m_width, this->m_height);
@@ -134,6 +135,11 @@ void SurfaceImpl::setPointerEnterHandler(void (Surface::*handler)())
     this->m_pointerEnterHandler = handler;
 }
 
+void SurfaceImpl::setPointerLeaveHandler(void (Surface::*handler)())
+{
+    this->m_pointerLeaveHandler = handler;
+}
+
 void SurfaceImpl::setPointerPressHandler(void (Surface::*handler)(int, double, double))
 {
     this->m_pointerPressHandler = handler;
@@ -184,6 +190,13 @@ bool SurfaceImpl::event(QEvent *event)
 
             return true;
         }
+    } else if (event->type() == QEvent::Leave) {
+        if (this->m_pointerLeaveHandler != nullptr) {
+            auto handler = this->m_pointerLeaveHandler;
+            (this->m_blSurface->*handler)();
+
+            return true;
+        }
     }
 
     return QWindow::event(event);
@@ -222,6 +235,31 @@ void SurfaceImpl::mousePressEvent(QMouseEvent *event)
         }
 
         auto handler = this->m_pointerPressHandler;
+        (this->m_blSurface->*handler)(button,
+            event->localPos().x(),
+            event->localPos().y());
+    }
+}
+
+void SurfaceImpl::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (this->m_pointerPressHandler != nullptr) {
+        int button = 0;
+        switch (event->button()) {
+        case Qt::LeftButton:
+            button = SurfaceImplButtonLeft;
+            break;
+        case Qt::RightButton:
+            button = SurfaceImplButtonRight;
+            break;
+        case Qt::MiddleButton:
+            button = SurfaceImplButtonMiddle;
+            break;
+        default:
+            break;
+        }
+
+        auto handler = this->m_pointerReleaseHandler;
         (this->m_blSurface->*handler)(button,
             event->localPos().x(),
             event->localPos().y());

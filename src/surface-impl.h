@@ -39,7 +39,9 @@ public:
 
     void setBlSurface(Surface *blSurface);
     void setPointerEnterHandler(void (Surface::*)());
+    void setPointerLeaveHandler(void (Surface::*)());
     void setPointerPressHandler(void (Surface::*)(int button, double x, double y));
+    void setPointerReleaseHandler(void (Surface::*)(int button, double x, double y));
 
 signals:
     void implXChanged(double x);
@@ -58,6 +60,7 @@ protected:
     void exposeEvent(QExposeEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
@@ -72,7 +75,9 @@ private:
 
     Surface *m_blSurface;
     void (Surface::*m_pointerEnterHandler)();
+    void (Surface::*m_pointerLeaveHandler)();
     void (Surface::*m_pointerPressHandler)(int button, double x, double y);
+    void (Surface::*m_pointerReleaseHandler)(int button, double x, double y);
 };
 
 } // namespace bl

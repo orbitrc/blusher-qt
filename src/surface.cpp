@@ -29,7 +29,9 @@ Surface::Surface(Surface *parent)
 
     // Set event handlers.
     this->_impl->setPointerEnterHandler(&Surface::pointer_enter_handler);
+    this->_impl->setPointerLeaveHandler(&Surface::pointer_leave_handler);
     this->_impl->setPointerPressHandler(&Surface::pointer_press_handler);
+    this->_impl->setPointerReleaseHandler(&Surface::pointer_release_handler);
 }
 
 //=================
@@ -93,7 +95,17 @@ void Surface::pointer_enter_event(std::shared_ptr<PointerEvent> event)
     (void)event;
 }
 
+void Surface::pointer_leave_event(std::shared_ptr<PointerEvent> event)
+{
+    (void)event;
+}
+
 void Surface::pointer_press_event(std::shared_ptr<PointerEvent> event)
+{
+    (void)event;
+}
+
+void Surface::pointer_release_event(std::shared_ptr<PointerEvent> event)
 {
     (void)event;
 }
@@ -121,7 +133,42 @@ void Surface::pointer_enter_handler()
     this->pointer_enter_event(event);
 }
 
+void Surface::pointer_leave_handler()
+{
+    this->_state = State::Normal;
+
+    PointerEvent::Button button = PointerEvent::Button::None;
+
+    auto event = std::make_shared<PointerEvent>(button, 0, 0);
+
+    this->pointer_leave_event(event);
+}
+
 void Surface::pointer_press_handler(int impl_button, double x, double y)
+{
+    PointerEvent::Button button;
+    switch (impl_button) {
+    case SurfaceImplButtonLeft:
+        button = PointerEvent::Button::Left;
+        // Set surface state to active.
+        this->_state = State::Active;
+        break;
+    case SurfaceImplButtonRight:
+        button = PointerEvent::Button::Right;
+        break;
+    case SurfaceImplButtonMiddle:
+        button = PointerEvent::Button::Middle;
+        break;
+    default:
+        break;
+    }
+
+    auto event = std::make_shared<PointerEvent>(button, x, y);
+
+    this->pointer_press_event(event);
+}
+
+void Surface::pointer_release_handler(int impl_button, double x, double y)
 {
     PointerEvent::Button button;
     switch (impl_button) {
@@ -140,7 +187,7 @@ void Surface::pointer_press_handler(int impl_button, double x, double y)
 
     auto event = std::make_shared<PointerEvent>(button, x, y);
 
-    this->pointer_press_event(event);
+    this->pointer_release_event(event);
 }
 
 } // namespace bl

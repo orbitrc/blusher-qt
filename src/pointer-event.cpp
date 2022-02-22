@@ -13,7 +13,7 @@ PointerEvent::PointerEvent(Button button, double x, double y)
 
 PointerEvent::~PointerEvent()
 {
-    fprintf(stderr, "PointerEvent::~PointerEvent()\n");
+//    fprintf(stderr, "PointerEvent::~PointerEvent()\n");
 }
 
 //=================
