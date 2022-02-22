@@ -7,6 +7,7 @@ class PointerEvent
 {
 public:
     enum class Button {
+        None,
         Left,
         Right,
         Middle,

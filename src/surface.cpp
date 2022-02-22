@@ -19,6 +19,7 @@ Surface::Surface(Surface *parent)
     }
 
     this->_parent = parent;
+    this->_state = State::Normal;
 
     this->set_color(Color::from_rgb(255, 255, 255));
 
@@ -27,6 +28,7 @@ Surface::Surface(Surface *parent)
     this->_impl->setBlSurface(this);
 
     // Set event handlers.
+    this->_impl->setPointerEnterHandler(&Surface::pointer_enter_handler);
     this->_impl->setPointerPressHandler(&Surface::pointer_press_handler);
 }
 
@@ -86,6 +88,11 @@ void Surface::move_if_window()
 // Events
 //=================
 
+void Surface::pointer_enter_event(std::shared_ptr<PointerEvent> event)
+{
+    (void)event;
+}
+
 void Surface::pointer_press_event(std::shared_ptr<PointerEvent> event)
 {
     (void)event;
@@ -102,6 +109,17 @@ void Surface::on_clicked()
 //==================
 // Private Methods
 //==================
+
+void Surface::pointer_enter_handler()
+{
+    this->_state = State::Hover;
+
+    PointerEvent::Button button = PointerEvent::Button::None;
+
+    auto event = std::make_shared<PointerEvent>(button, 0, 0);
+
+    this->pointer_enter_event(event);
+}
 
 void Surface::pointer_press_handler(int impl_button, double x, double y)
 {

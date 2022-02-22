@@ -27,6 +27,7 @@ SurfaceImpl::SurfaceImpl(QWindow *parent)
 
     this->m_color = QColor(255, 255, 255);
 
+    this->m_pointerEnterHandler = nullptr;
     this->m_pointerPressHandler = nullptr;
 
     this->setGeometry(this->m_x, this->m_y, this->m_width, this->m_height);
@@ -128,6 +129,11 @@ void SurfaceImpl::setBlSurface(Surface *blSurface)
     this->m_blSurface = blSurface;
 }
 
+void SurfaceImpl::setPointerEnterHandler(void (Surface::*handler)())
+{
+    this->m_pointerEnterHandler = handler;
+}
+
 void SurfaceImpl::setPointerPressHandler(void (Surface::*handler)(int, double, double))
 {
     this->m_pointerPressHandler = handler;
@@ -169,6 +175,20 @@ void SurfaceImpl::onImplHeightChanged(double height)
 // Events
 //===========
 
+bool SurfaceImpl::event(QEvent *event)
+{
+    if (event->type() == QEvent::Enter) {
+        if (this->m_pointerEnterHandler != nullptr) {
+            auto handler = this->m_pointerEnterHandler;
+            (this->m_blSurface->*handler)();
+
+            return true;
+        }
+    }
+
+    return QWindow::event(event);
+}
+
 void SurfaceImpl::exposeEvent(QExposeEvent *event)
 {
     (void)event;
@@ -176,6 +196,11 @@ void SurfaceImpl::exposeEvent(QExposeEvent *event)
     if (this->isExposed()) {
         this->paint();
     }
+}
+
+void SurfaceImpl::mouseMoveEvent(QMouseEvent *event)
+{
+//    fprintf(stderr, "(%f, %f)\n", event->localPos().x(), event->localPos().y());
 }
 
 void SurfaceImpl::mousePressEvent(QMouseEvent *event)

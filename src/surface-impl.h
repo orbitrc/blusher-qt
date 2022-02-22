@@ -11,9 +11,10 @@ namespace bl {
 
 class Surface;
 
-static const int SurfaceImplButtonLeft = 0;
-static const int SurfaceImplButtonRight = 1;
-static const int SurfaceImplButtonMiddle = 2;
+static const int SurfaceImplButtonNone = 0;
+static const int SurfaceImplButtonLeft = 1;
+static const int SurfaceImplButtonRight = 2;
+static const int SurfaceImplButtonMiddle = 3;
 
 class SurfaceImpl : public QWindow
 {
@@ -37,6 +38,7 @@ public:
     void setColor(const Color& color);
 
     void setBlSurface(Surface *blSurface);
+    void setPointerEnterHandler(void (Surface::*)());
     void setPointerPressHandler(void (Surface::*)(int button, double x, double y));
 
 signals:
@@ -52,7 +54,9 @@ private slots:
     void onImplHeightChanged(double height);
 
 protected:
+    bool event(QEvent *event) override;
     void exposeEvent(QExposeEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
@@ -67,6 +71,7 @@ private:
     QBackingStore *m_backingStore;
 
     Surface *m_blSurface;
+    void (Surface::*m_pointerEnterHandler)();
     void (Surface::*m_pointerPressHandler)(int button, double x, double y);
 };
 

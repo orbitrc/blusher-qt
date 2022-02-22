@@ -14,6 +14,20 @@ class SurfaceImpl;
 class Surface
 {
 public:
+    enum class State {
+        /// State is normal.
+        Normal = 0,
+        /// Pointer hovered.
+        Hover = 1,
+        /// Pointer pressed and pointer is in the surface.
+        Active = 2,
+        /// Pointer pressed but pointer is out of the surface area.
+        ActiveOut = 3,
+        /// Keyboard focus.
+        Focus = 4,
+    };
+
+public:
     Surface(Surface *parent = nullptr);
 
     /// Height of the surface.
@@ -43,6 +57,7 @@ protected:
     //===============
     // Events
     //===============
+    virtual void pointer_enter_event(std::shared_ptr<PointerEvent> event);
     virtual void pointer_press_event(std::shared_ptr<PointerEvent> event);
 
     //===============
@@ -51,6 +66,7 @@ protected:
 
 private:
     void on_clicked();
+    void pointer_enter_handler();
     void pointer_press_handler(int impl_button, double x, double y);
 
 private:
@@ -58,6 +74,7 @@ private:
 
     Surface *_parent;
     Color _color;
+    State _state;
 };
 
 } // namespace bl
