@@ -14,7 +14,7 @@ public:
 
 public:
     PointerEvent(Button button, double x, double y);
-//    ~PointerEvent();
+    ~PointerEvent();
 
     Button button() const;
 

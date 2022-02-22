@@ -23,6 +23,11 @@ Surface::Surface(Surface *parent)
     this->set_color(Color::from_rgb(255, 255, 255));
 
     this->color_changed.connect([]() { fprintf(stderr, "Hello, color_changed!\n"); });
+
+    this->_impl->setBlSurface(this);
+
+    // Set event handlers.
+    this->_impl->setPointerPressHandler(&Surface::pointer_press_handler);
 }
 
 //=================
@@ -52,6 +57,49 @@ void Surface::set_geometry(double x, double y, double width, double height)
 void Surface::show()
 {
     this->_impl->show();
+}
+
+//=================
+// Events
+//=================
+
+void Surface::pointer_press_event(std::shared_ptr<PointerEvent> event)
+{
+    (void)event;
+}
+
+//=================
+// Private Slots
+//=================
+
+void Surface::on_clicked()
+{
+}
+
+//==================
+// Private Methods
+//==================
+
+void Surface::pointer_press_handler(int impl_button, double x, double y)
+{
+    PointerEvent::Button button;
+    switch (impl_button) {
+    case SurfaceImplButtonLeft:
+        button = PointerEvent::Button::Left;
+        break;
+    case SurfaceImplButtonRight:
+        button = PointerEvent::Button::Right;
+        break;
+    case SurfaceImplButtonMiddle:
+        button = PointerEvent::Button::Middle;
+        break;
+    default:
+        break;
+    }
+
+    auto event = std::make_shared<PointerEvent>(button, x, y);
+
+    this->pointer_press_event(event);
 }
 
 } // namespace bl

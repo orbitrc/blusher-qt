@@ -1,5 +1,7 @@
 #include <blusher/pointer-event.h>
 
+#include <stdio.h>
+
 namespace bl {
 
 PointerEvent::PointerEvent(Button button, double x, double y)
@@ -7,6 +9,11 @@ PointerEvent::PointerEvent(Button button, double x, double y)
     this->_button = button;
     this->_x = x;
     this->_y = y;
+}
+
+PointerEvent::~PointerEvent()
+{
+    fprintf(stderr, "PointerEvent::~PointerEvent()\n");
 }
 
 //=================

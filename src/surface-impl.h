@@ -1,6 +1,8 @@
 #ifndef SURFACEIMPL_H
 #define SURFACEIMPL_H
 
+#include <functional>
+
 #include <QWindow>
 
 #include <blusher/color.h>
@@ -8,6 +10,10 @@
 namespace bl {
 
 class Surface;
+
+static const int SurfaceImplButtonLeft = 0;
+static const int SurfaceImplButtonRight = 1;
+static const int SurfaceImplButtonMiddle = 2;
 
 class SurfaceImpl : public QWindow
 {
@@ -30,6 +36,9 @@ public:
 
     void setColor(const Color& color);
 
+    void setBlSurface(Surface *blSurface);
+    void setPointerPressHandler(void (Surface::*)(int button, double x, double y));
+
 signals:
     void implXChanged(double x);
     void implYChanged(double y);
@@ -44,6 +53,7 @@ private slots:
 
 protected:
     void exposeEvent(QExposeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
@@ -55,6 +65,9 @@ private:
     QColor m_color;
 
     QBackingStore *m_backingStore;
+
+    Surface *m_blSurface;
+    void (Surface::*m_pointerPressHandler)(int button, double x, double y);
 };
 
 } // namespace bl

@@ -4,6 +4,7 @@
 
 #include <QBackingStore>
 #include <QPainter>
+#include <QMouseEvent>
 #include <QResizeEvent>
 
 namespace bl {
@@ -25,6 +26,8 @@ SurfaceImpl::SurfaceImpl(QWindow *parent)
     this->m_height = 100.0;
 
     this->m_color = QColor(255, 255, 255);
+
+    this->m_pointerPressHandler = nullptr;
 
     this->setGeometry(this->m_x, this->m_y, this->m_width, this->m_height);
 
@@ -120,6 +123,16 @@ void SurfaceImpl::setColor(const Color &color)
     this->m_color = QColor(color.red(), color.green(), color.blue(), color.alpha());
 }
 
+void SurfaceImpl::setBlSurface(Surface *blSurface)
+{
+    this->m_blSurface = blSurface;
+}
+
+void SurfaceImpl::setPointerPressHandler(void (Surface::*handler)(int, double, double))
+{
+    this->m_pointerPressHandler = handler;
+}
+
 //=================
 // Private Slots
 //=================
@@ -162,6 +175,31 @@ void SurfaceImpl::exposeEvent(QExposeEvent *event)
 
     if (this->isExposed()) {
         this->paint();
+    }
+}
+
+void SurfaceImpl::mousePressEvent(QMouseEvent *event)
+{
+    if (this->m_pointerPressHandler != nullptr) {
+        int button = 0;
+        switch (event->button()) {
+        case Qt::LeftButton:
+            button = SurfaceImplButtonLeft;
+            break;
+        case Qt::RightButton:
+            button = SurfaceImplButtonRight;
+            break;
+        case Qt::MiddleButton:
+            button = SurfaceImplButtonMiddle;
+            break;
+        default:
+            break;
+        }
+
+        auto handler = this->m_pointerPressHandler;
+        (this->m_blSurface->*handler)(button,
+            event->localPos().x(),
+            event->localPos().y());
     }
 }
 

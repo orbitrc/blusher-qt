@@ -1,8 +1,11 @@
 #ifndef _BL_SURFACE_H
 #define _BL_SURFACE_H
 
+#include <memory>
+
 #include "color.h"
 #include "signal.h"
+#include "pointer-event.h"
 
 namespace bl {
 
@@ -23,9 +26,14 @@ public:
 
 public:
     Signal<> color_changed;
+    Signal<> clicked;
 
 protected:
-    virtual void pointer_press_event();
+    virtual void pointer_press_event(std::shared_ptr<PointerEvent> event);
+
+private:
+    void on_clicked();
+    void pointer_press_handler(int impl_button, double x, double y);
 
 private:
     SurfaceImpl *_impl;
