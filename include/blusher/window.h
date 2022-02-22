@@ -7,6 +7,8 @@
 
 namespace bl {
 
+class TitleBar;
+
 class Window : public Surface
 {
 public:
@@ -16,6 +18,8 @@ public:
     uint32_t height() const;
 
     void show();
+
+    void move();
 
 private:
     void update_decoration();
@@ -30,7 +34,7 @@ private:
     Surface *_decoration;
     Surface *_resize;
     Surface *_border;
-    Surface *_title_bar;
+    TitleBar *_title_bar;
     Surface *_body;
 };
 

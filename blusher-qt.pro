@@ -19,6 +19,7 @@ SOURCES += \
     src/application.cpp \
     src/surface.cpp \
     src/window.cpp \
+    src/title-bar.cpp \
     src/signal.cpp \
     src/color.cpp \
     src/pointer-event.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     include/blusher/application.h \
     include/blusher/surface.h \
     include/blusher/window.h \
+    include/blusher/title-bar.h \
     include/blusher/signal.h \
     include/blusher/color.h \
     include/blusher/pointer-event.h \

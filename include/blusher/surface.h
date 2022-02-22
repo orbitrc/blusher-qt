@@ -16,7 +16,12 @@ class Surface
 public:
     Surface(Surface *parent = nullptr);
 
+    /// Height of the surface.
+    double height() const;
+
     void paint();
+
+    Surface* parent();
 
     void set_color(const Color& color);
 
@@ -24,12 +29,25 @@ public:
 
     void show();
 
+    /// Width of the surface.
+    double width() const;
+
+    /// This is implementation specific method. DO NOT USE THIS in an application.
+    void move_if_window();
+
 public:
     Signal<> color_changed;
     Signal<> clicked;
 
 protected:
+    //===============
+    // Events
+    //===============
     virtual void pointer_press_event(std::shared_ptr<PointerEvent> event);
+
+    //===============
+    // Protected
+    //===============
 
 private:
     void on_clicked();

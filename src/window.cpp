@@ -1,5 +1,7 @@
 #include <blusher/window.h>
 
+#include <blusher/title-bar.h>
+
 #define BLUSHER_SHADOW_WIDTH 40
 #define BLUSHER_RESIZE_WIDTH 5
 #define BLUSHER_BORDER_WIDTH 1
@@ -8,6 +10,7 @@
 namespace bl {
 
 Window::Window()
+    : Surface(nullptr)
 {
     this->_width = 200;
     this->_height = 200;
@@ -15,7 +18,7 @@ Window::Window()
     this->_decoration = static_cast<Surface*>(this);
     this->_resize = new Surface(this->_decoration);
     this->_border = new Surface(this->_resize);
-    this->_title_bar = new Surface(this->_border);
+    this->_title_bar = new TitleBar(this->_border);
 
     // Init decoration.
     this->update_decoration();
@@ -57,6 +60,10 @@ void Window::show()
 
     this->_title_bar->show();
     this->_title_bar->paint();
+}
+
+void Window::move()
+{
 }
 
 //====================

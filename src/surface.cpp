@@ -34,9 +34,19 @@ Surface::Surface(Surface *parent)
 // Public Methods
 //=================
 
+double Surface::height() const
+{
+    return this->_impl->height();
+}
+
 void Surface::paint()
 {
     this->_impl->paint();
+}
+
+Surface* Surface::parent()
+{
+    return this->_parent;
 }
 
 void Surface::set_color(const Color &color)
@@ -57,6 +67,19 @@ void Surface::set_geometry(double x, double y, double width, double height)
 void Surface::show()
 {
     this->_impl->show();
+}
+
+double Surface::width() const
+{
+    return this->_impl->x();
+}
+
+void Surface::move_if_window()
+{
+    fprintf(stderr, "Surface::move_if_window() - parent: %p\n", this->_parent);
+    if (this->_parent == nullptr) {
+        this->_impl->startSystemMove();
+    }
 }
 
 //=================
