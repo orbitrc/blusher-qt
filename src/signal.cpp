@@ -72,4 +72,29 @@ Signal<int>::Connection Signal<int>::connect(std::function<void(int)> slot)
     return Connection(this->_impl->connect(slot));
 }
 
+//==================
+// Surface::State
+//==================
+
+template<>
+Signal<Surface::State>::Signal()
+BLUSHER_SIGNAL_CONSTRUCTOR
+
+BLUSHER_CONNECTION_CONSTRUCTOR_ARG(Surface::State)
+
+BLUSHER_CONNECTION_DISCONNECT_ARG(Surface::State)
+
+template<>
+void Signal<Surface::State>::emit(Surface::State arg)
+{
+    this->_impl->emitSignal(arg);
+}
+
+template<>
+Signal<Surface::State>::Connection Signal<Surface::State>::connect(
+        std::function<void(Surface::State)> slot)
+{
+    return Connection(this->_impl->connect(slot));
+}
+
 } // namespace bl

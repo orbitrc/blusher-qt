@@ -16,6 +16,9 @@ SignalImpl::SignalImpl()
 {
 }
 
+//================
+// void
+//================
 ConnectionImpl* SignalImpl::connect(std::function<void()> slot)
 {
     auto qConn = QObject::connect(this, &SignalImpl::signalVoid, this, [slot]() {
@@ -25,6 +28,14 @@ ConnectionImpl* SignalImpl::connect(std::function<void()> slot)
     return new ConnectionImpl(qConn);
 }
 
+void SignalImpl::emitSignal()
+{
+    Q_EMIT this->signalVoid();
+}
+
+//==================
+// int
+//==================
 ConnectionImpl* SignalImpl::connect(std::function<void(int)> slot)
 {
     auto qConn = QObject::connect(this, &SignalImpl::signalInt, this, [slot](int arg) {
@@ -34,14 +45,27 @@ ConnectionImpl* SignalImpl::connect(std::function<void(int)> slot)
     return new ConnectionImpl(qConn);
 }
 
-void SignalImpl::emitSignal()
-{
-    emit this->signalVoid();
-}
-
 void SignalImpl::emitSignal(int arg)
 {
-    emit this->signalInt(arg);
+    Q_EMIT this->signalInt(arg);
+}
+
+//===================
+// Surface::State
+//===================
+ConnectionImpl* SignalImpl::connect(std::function<void(Surface::State)> slot)
+{
+    auto qConn = QObject::connect(this, &SignalImpl::signalSurfaceState,
+                                  this, [slot](Surface::State arg) {
+        slot(arg);
+    });
+
+    return new ConnectionImpl(qConn);
+}
+
+void SignalImpl::emitSignal(Surface::State arg)
+{
+    Q_EMIT this->signalSurfaceState(arg);
 }
 
 }

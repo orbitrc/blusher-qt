@@ -5,6 +5,11 @@
 
 #include <QObject>
 
+#ifdef emit
+#undef emit
+#endif
+#include <blusher/surface.h>
+
 namespace bl {
 
 class ConnectionImpl
@@ -27,13 +32,16 @@ public:
 
     ConnectionImpl* connect(std::function<void()> slot);
     ConnectionImpl* connect(std::function<void(int)> slot);
+    ConnectionImpl* connect(std::function<void(Surface::State)> slot);
 
     void emitSignal();
     void emitSignal(int);
+    void emitSignal(Surface::State);
 
 signals:
     void signalVoid();
     void signalInt(int);
+    void signalSurfaceState(Surface::State);
 
 private:
 };
