@@ -22,6 +22,7 @@ SOURCES += \
     src/title-bar.cpp \
     src/signal.cpp \
     src/color.cpp \
+    src/resource.cpp \
     src/pointer-event.cpp \
     blusherqt.cpp \
     src/application-impl.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     include/blusher/title-bar.h \
     include/blusher/signal.h \
     include/blusher/color.h \
+    include/blusher/resource.h \
     include/blusher/pointer-event.h \
     blusher-qt_global.h \
     blusherqt.h \
