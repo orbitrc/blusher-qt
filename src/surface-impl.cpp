@@ -145,6 +145,11 @@ void SurfaceImpl::setPointerPressHandler(void (Surface::*handler)(int, double, d
     this->m_pointerPressHandler = handler;
 }
 
+void SurfaceImpl::setPointerReleaseHandler(void (Surface::*handler)(int, double, double))
+{
+    this->m_pointerReleaseHandler = handler;
+}
+
 //=================
 // Private Slots
 //=================
